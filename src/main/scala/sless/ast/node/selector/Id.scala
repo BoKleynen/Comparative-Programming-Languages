@@ -1,6 +1,6 @@
-package sless.ast.selector
+package sless.ast.node.selector
 
-import sless.ast.SelectorNode
+import sless.ast.node.SelectorNode
 
 /**
   * The CSS ID selector matches an element based on the value of its id attribute. In order for
@@ -14,8 +14,4 @@ import sless.ast.SelectorNode
   * @param selector
   * @param id
   */
-case class Id(selector: SelectorNode, id: String) extends SelectorNode {
-  override def compile(): String = s"${selector.compile()}#$id"
-
-  override def pretty(): String = s"${selector.pretty()}#$id"
-}
+case class Id(selector: SelectorNode, id: String) extends SelectorNode

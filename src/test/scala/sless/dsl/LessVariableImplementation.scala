@@ -1,6 +1,6 @@
 package sless.dsl
 
-import sless.ast.Sless
+import sless.ast.node.Sless
 
 object LessVariableImplementation {
   type DSL = PropertyDSL with SelectorDSL with ValueDSL with Compilable

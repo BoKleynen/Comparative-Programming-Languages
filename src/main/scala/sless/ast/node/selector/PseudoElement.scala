@@ -1,6 +1,6 @@
-package sless.ast.selector
+package sless.ast.node.selector
 
-import sless.ast.SelectorNode
+import sless.ast.node.SelectorNode
 
 /**
   * A CSS pseudo-element is a keyword added to a selector that lets you style a specific part of
@@ -15,8 +15,4 @@ import sless.ast.SelectorNode
   * @param selector
   * @param part
   */
-case class PseudoElement(selector: SelectorNode, part: String) extends SelectorNode {
-  override def compile(): String = s"${selector.compile()}::$part"
-
-  override def pretty(): String = s"${selector.pretty()}::$part"
-}
+case class PseudoElement(selector: SelectorNode, part: String) extends SelectorNode

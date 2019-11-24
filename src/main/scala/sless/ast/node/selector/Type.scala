@@ -1,6 +1,6 @@
-package sless.ast.selector
+package sless.ast.node.selector
 
-import sless.ast.SelectorNode
+import sless.ast.node.SelectorNode
 
 /**
   * The CSS type selector matches elements by node name. In other words, it selects all
@@ -13,8 +13,4 @@ import sless.ast.SelectorNode
   *
   * @param name
   */
-case class Type(name: String) extends SelectorNode {
-  override def compile(): String = name
-
-  override def pretty(): String = name
-}
+case class Type(name: String) extends SelectorNode

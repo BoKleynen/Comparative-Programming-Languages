@@ -1,6 +1,6 @@
-package sless.ast.selector
+package sless.ast.node.selector
 
-import sless.ast.SelectorNode
+import sless.ast.node.SelectorNode
 
 /**
   * A CSS pseudo-class is a keyword added to a selector that specifies a special state of the
@@ -15,8 +15,4 @@ import sless.ast.SelectorNode
   * @param selector
   * @param action
   */
-case class PseudoClass(selector: SelectorNode, action: String) extends SelectorNode{
-  override def compile(): String = s"${selector.compile()}:$action"
-
-  override def pretty(): String = s"${selector.pretty()}:$action"
-}
+case class PseudoClass(selector: SelectorNode, action: String) extends SelectorNode

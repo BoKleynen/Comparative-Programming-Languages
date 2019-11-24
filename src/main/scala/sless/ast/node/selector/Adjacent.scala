@@ -1,6 +1,6 @@
-package sless.ast.selector
+package sless.ast.node.selector
 
-import sless.ast.SelectorNode
+import sless.ast.node.SelectorNode
 
 /**
   * The adjacent sibling combinator (+) separates two selectors and matches the second
@@ -14,8 +14,4 @@ import sless.ast.SelectorNode
   * @param lhs
   * @param rhs
   */
-case class Adjacent(lhs: SelectorNode, rhs: SelectorNode) extends SelectorNode {
-  override def compile(): String = s"${lhs.compile()}+${rhs.compile()}"
-
-  override def pretty(): String = s"${lhs.pretty()} + ${rhs.pretty()}"
-}
+case class Adjacent(lhs: SelectorNode, rhs: SelectorNode) extends SelectorNode

@@ -1,6 +1,6 @@
-package sless.ast.selector
+package sless.ast.node.selector
 
-import sless.ast.SelectorNode
+import sless.ast.node.SelectorNode
 
 /**
   * The child combinator (>) is placed between two CSS selectors. It matches only those
@@ -15,8 +15,4 @@ import sless.ast.SelectorNode
   * @param lhs
   * @param rhs
   */
-case class Child(lhs: SelectorNode, rhs: SelectorNode) extends SelectorNode {
-  override def compile(): String = s"${lhs.compile()}>${rhs.compile()}"
-
-  override def pretty(): String = s"${lhs.pretty()} > ${rhs.pretty()}"
-}
+case class Child(lhs: SelectorNode, rhs: SelectorNode) extends SelectorNode

@@ -26,5 +26,5 @@ trait LintDSL extends BaseDSL {
   /**
     * Check if the given sheet contains strictly more than n 'float' properties and, if so, returns true, otherwise false.
     */
-  def limitFloats(css : Css, n : Integer) : Boolean
+  def limitFloats(css : Css, n : Integer) : Boolean 
 }

@@ -1,6 +1,6 @@
-package sless.ast.selector
+package sless.ast.node.selector
 
-import sless.ast.{SelectorNode, ValueNode}
+import sless.ast.node.{SelectorNode, ValueNode}
 
 /**
   * The CSS attribute selector matches elements based on the presence or value of a given attribute.
@@ -34,8 +34,4 @@ import sless.ast.{SelectorNode, ValueNode}
   * @param attr
   * @param value
   */
-case class Attribute(selector: SelectorNode, attr: String, value: ValueNode) extends SelectorNode {
-  override def compile(): String = s"""${selector.compile()}[$attr="${value.compile()}"]"""
-
-  override def pretty(): String = s"""${selector.pretty()}[$attr="${value.pretty()}"]"""
-}
+case class Attribute(selector: SelectorNode, attr: String, value: ValueNode) extends SelectorNode

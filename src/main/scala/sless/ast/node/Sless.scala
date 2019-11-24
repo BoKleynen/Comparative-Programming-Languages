@@ -1,7 +1,8 @@
-package sless.ast
+package sless.ast.node
 
+import sless.ast.node.selector._
 import sless.dsl.{Compilable, PropertyDSL, SelectorDSL, ValueDSL}
-import selector._
+import sless.ast.visitor.{Compiler, PrettyPrinter}
 
 class Sless extends PropertyDSL with SelectorDSL with ValueDSL with Compilable {
   override type Rule = RuleNode
@@ -45,7 +46,7 @@ class Sless extends PropertyDSL with SelectorDSL with ValueDSL with Compilable {
 
   override def value(string: String): Value = new ValueNode(string)
 
-  override def compile(sheet: Css): String = sheet.compile()
+  override def compile(sheet: Css): String = sheet.accept(new Compiler)
 
-  override def pretty(sheet: Css, spaces: Int): String = sheet.pretty(spaces)
+  override def pretty(sheet: Css, spaces: Int): String = sheet.accept(new PrettyPrinter(spaces))
 }

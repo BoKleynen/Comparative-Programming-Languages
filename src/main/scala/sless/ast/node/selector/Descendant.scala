@@ -1,6 +1,6 @@
-package sless.ast.selector
+package sless.ast.node.selector
 
-import sless.ast.SelectorNode
+import sless.ast.node.SelectorNode
 
 /**
   * The descendant combinator — typically represented by a single space ( ) character —
@@ -16,8 +16,4 @@ import sless.ast.SelectorNode
   * @param lhs
   * @param rhs
   */
-case class Descendant(lhs: SelectorNode, rhs: SelectorNode) extends SelectorNode {
-  override def compile(): String = s"${lhs.compile()} ${rhs.compile()}"
-
-  override def pretty(): String = s"${lhs.pretty()} ${rhs.pretty()}"
-}
+case class Descendant(lhs: SelectorNode, rhs: SelectorNode) extends SelectorNode

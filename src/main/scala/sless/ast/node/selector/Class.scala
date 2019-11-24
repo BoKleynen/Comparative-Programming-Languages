@@ -1,6 +1,6 @@
-package sless.ast.selector
+package sless.ast.node.selector
 
-import sless.ast.SelectorNode
+import sless.ast.node.SelectorNode
 
 /**
   * The CSS class selector matches elements based on the contents of their class attribute.
@@ -24,8 +24,4 @@ import sless.ast.SelectorNode
   * @param selector
   * @param className
   */
-case class Class(selector: SelectorNode, className: String) extends SelectorNode {
-  override def compile(): String = s"${selector.compile()}.$className"
-
-  override def pretty(): String = s"${selector.pretty()}.$className"
-}
+case class Class(selector: SelectorNode, className: String) extends SelectorNode
