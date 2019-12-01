@@ -1,3 +1,3 @@
 package sless.ast.node
 
-class SlessSheet(val rules: Seq[RuleNode]) extends Node
+case class SlessSheet(rules: Seq[RuleNode]) extends Node

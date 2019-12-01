@@ -1,3 +1,3 @@
 package sless.ast.node
 
-class PropertyNode(val name: String) extends Node
+case class PropertyNode(name: String) extends Node

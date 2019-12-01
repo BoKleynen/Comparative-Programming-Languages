@@ -13,11 +13,11 @@ class Sless extends PropertyDSL with SelectorDSL with ValueDSL with LintDSL with
   override type Property = PropertyNode
   override type Value = ValueNode
 
-  override protected def fromRules(rules: Seq[Rule]): Css = new SlessSheet(rules)
+  override protected def fromRules(rules: Seq[Rule]): Css = SlessSheet(rules)
 
-  override def prop(string: String): Property = new PropertyNode(string)
+  override def prop(string: String): Property = PropertyNode(string)
 
-  override protected def assign(p: Property, value: Value): Declaration = new DeclarationNode(p, value)
+  override protected def assign(p: Property, value: Value): Declaration = DeclarationNode(p, value)
 
   override protected def className(s: Selector, string: String): Selector = Class(s, string)
 
@@ -43,9 +43,9 @@ class Sless extends PropertyDSL with SelectorDSL with ValueDSL with LintDSL with
 
   override val All: Selector = selector.All
 
-  override protected def bindTo(s: Selector, declarations: Seq[Declaration]): Rule = new RuleNode(s, declarations)
+  override protected def bindTo(s: Selector, declarations: Seq[Declaration]): Rule = RuleNode(s, declarations)
 
-  override def value(string: String): Value = new ValueNode(string)
+  override def value(string: String): Value = ValueNode(string)
 
   override def compile(sheet: Css): String = Compiler(sheet)
 
@@ -57,9 +57,9 @@ class Sless extends PropertyDSL with SelectorDSL with ValueDSL with LintDSL with
 
   override def limitFloats(css: SlessSheet, n: Integer): Boolean = PropertyCounter(css, "float") > n
 
-  override protected def commentRule(rule: RuleNode, str: String): RuleNode =
-    new RuleNode(rule.selector, rule.declarations, Some(new CommentNode(str)))
+  override protected def commentRule(rule: RuleNode, str: String): Rule =
+    RuleNode(rule.selector, rule.declarations, Some(CommentNode(str)))
 
   override protected def commentDeclaration(declaration: DeclarationNode, str: String): DeclarationNode =
-    new DeclarationNode(declaration.property, declaration.value, Some(new CommentNode(str)))
+    DeclarationNode(declaration.property, declaration.value, Some(CommentNode(str)))
 }

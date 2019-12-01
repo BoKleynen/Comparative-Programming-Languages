@@ -1,3 +1,3 @@
 package sless.ast.node
 
-class ValueNode(val value: String) extends Node
+case class ValueNode(value: String) extends Node

@@ -1,6 +1,6 @@
 package sless.ast.visitor
 
-import sless.ast.node.{CommentNode, DeclarationNode, PropertyNode, RuleNode, SelectorNode, SlessSheet, ValueNode}
+import sless.ast.node.{DeclarationNode, PropertyNode, RuleNode, SelectorNode, SlessSheet, ValueNode}
 import sless.ast.node.selector.{Adjacent, All, Attribute, Child, Class, Descendant, GeneralSibling, Id, List, PseudoClass, PseudoElement, Type}
 
 object PrettyPrinter {

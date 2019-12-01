@@ -10,7 +10,7 @@ object MarginAggregator {
 //  {
 //    val res = css.rules.map(visitRuleNode)
 //    if (res.exists(_._1)) {
-//      (true, new SlessSheet(res.filterNot(_._1).map(_._2)))
+//      (true, SlessSheet(res.filterNot(_._1).map(_._2)))
 //    } else {
 //      (false, css)
 //    }
