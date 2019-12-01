@@ -1,7 +1,8 @@
 package sless.ast.visitor
 
-import sless.ast.node.{FlatRuleNode, NestedRuleNode, RuleNode, SlessSheet}
+import sless.ast.node.{DeclarationNode, FlatRuleNode, NestedRuleNode, RuleNode, SlessSheet}
 
+// TODO: Write test for nested rules
 object RemoveEmptyRules {
   def apply(css: SlessSheet): (Boolean, SlessSheet) = visitSlessSheet(css)
 
@@ -15,7 +16,20 @@ object RemoveEmptyRules {
   }
 
   private def visitRuleNode(rule: RuleNode): (Boolean, RuleNode) = rule match {
-    case NestedRuleNode(_, nodes, _) => ??? // TODO
-    case FlatRuleNode(_, declarations, _) =>(declarations.isEmpty, rule)
+    case NestedRuleNode(selector, nodes, comment) => {
+      val res = nodes
+        .map {
+          case d: DeclarationNode => (false, d)
+          case r: RuleNode => visitRuleNode(r)
+        }
+
+      if (res.exists(_._1)) {
+        (true, NestedRuleNode(selector, res.filterNot(_._1).map(_._2), comment))
+      } else {
+        (false, rule)
+      }
+    }
+
+    case FlatRuleNode(_, declarations, _) => (declarations.isEmpty, rule)
   }
 }
