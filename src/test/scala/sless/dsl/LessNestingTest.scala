@@ -17,7 +17,7 @@ class LessNestingTest extends FunSuite {
 
     assert(
       LessNestingImplementation.dsl.compile(nestedExample) ===
-        """*#header{color:black;}*.logo{width:300px;}""")
+        """*#header{color:black;}*#header *.logo{width:300px;}""")
   }
 
   test("Parent support through 'Parent'") {
