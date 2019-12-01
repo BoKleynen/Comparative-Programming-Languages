@@ -1,11 +1,10 @@
 package sless.ast
 
-import sless.ast.node.selector._
 import sless.ast.node._
 import sless.ast.visitor.{Compiler, MarginAggregator, PrettyPrinter, PropertyCounter, RemoveEmptyRules}
-import sless.dsl.{CommentDSL, Compilable, LintDSL, PropertyDSL, SelectorDSL, ValueDSL}
+import sless.dsl.{CommentDSL, Compilable, LintDSL, NestedSelectorDSL, PropertyDSL, SelectorDSL, ValueDSL}
 
-class Sless extends PropertyDSL with SelectorDSL with ValueDSL with LintDSL with Compilable with CommentDSL {
+class Sless extends PropertyDSL with SelectorDSL with ValueDSL with LintDSL with Compilable with CommentDSL with NestedSelectorDSL {
   override type Rule = RuleNode
   override type Css = SlessSheet
   override type Selector = SelectorNode
@@ -41,9 +40,9 @@ class Sless extends PropertyDSL with SelectorDSL with ValueDSL with LintDSL with
 
   override def tipe(string: String): Selector = Type(string)
 
-  override val All: Selector = selector.All
+  override val All: Selector = node.All
 
-  override protected def bindTo(s: Selector, declarations: Seq[Declaration]): Rule = RuleNode(s, declarations)
+  override protected def bindTo(s: Selector, declarations: Seq[Declaration]): Rule = FlatRuleNode(s, declarations)
 
   override def value(string: String): Value = ValueNode(string)
 
@@ -57,9 +56,17 @@ class Sless extends PropertyDSL with SelectorDSL with ValueDSL with LintDSL with
 
   override def limitFloats(css: SlessSheet, n: Integer): Boolean = PropertyCounter(css, "float") > n
 
-  override protected def commentRule(rule: RuleNode, str: String): Rule =
-    RuleNode(rule.selector, rule.declarations, Some(CommentNode(str)))
+  override protected def commentRule(rule: Rule, str: String): Rule = rule match {
+    case FlatRuleNode(selector, declarations, _) => FlatRuleNode(selector, declarations, Some(CommentNode(str)))
+    case NestedRuleNode(selector, declarations, _) => NestedRuleNode(selector, declarations, Some(CommentNode(str)))
+  }
+
 
   override protected def commentDeclaration(declaration: DeclarationNode, str: String): DeclarationNode =
     DeclarationNode(declaration.property, declaration.value, Some(CommentNode(str)))
+
+  override type RuleOrDeclaration = RuleOrDeclarationNode
+  override val Parent = node.Parent
+
+  override protected def bindWithNesting(s: SelectorNode, rules: Seq[RuleOrDeclaration]): Rule = NestedRuleNode(s, rules)
 }

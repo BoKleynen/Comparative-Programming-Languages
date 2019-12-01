@@ -1,13 +1,15 @@
 package sless.ast.visitor
-import sless.ast.node.selector.{Adjacent, All, Attribute, Child, Class, Descendant, GeneralSibling, Id, List, PseudoClass, PseudoElement, Type}
-import sless.ast.node.{CommentNode, DeclarationNode, PropertyNode, RuleNode, SelectorNode, SlessSheet, ValueNode}
+import sless.ast.node._
 
 object Compiler {
   def apply(css: SlessSheet): String =  visitSlessSheet(css)
 
-  private def visitSlessSheet(css: SlessSheet): String = css.rules.map(visitRuleNode).mkString("")
+  private def visitSlessSheet(css: SlessSheet): String = css.rules
+    .flatMap(_.flatten())
+    .map(visitRuleNode)
+    .mkString("")
 
-  private def visitRuleNode(rule: RuleNode): String = {
+  private def visitRuleNode(rule: FlatRuleNode): String = {
     val comment = rule.comment match {
       case Some(comment) => s"/* ${comment.str} */"
       case None => ""
@@ -31,6 +33,8 @@ object Compiler {
     case PseudoClass(selector, action) => s"${visitSelectorNode(selector)}:$action"
     case PseudoElement(selector, part) => s"${visitSelectorNode(selector)}::$part"
     case Attribute(selector, attr, value) => s"""${visitSelectorNode(selector)}[$attr="${visitValueNode(value)}"]"""
+
+    case Parent => throw new IllegalArgumentException("Can't reach")
   }
 
   private def visitDeclarationNode(declaration: DeclarationNode): String = {
