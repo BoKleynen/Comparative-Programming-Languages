@@ -1,3 +1,13 @@
 package sless.ast.node
 
-case class SlessSheet(rules: Seq[RuleNode]) extends Node
+sealed abstract class SlessSheet extends Node {
+  def flatten(): SingularSheet
+}
+
+case class SingularSheet(rules: Seq[RuleNode]) extends SlessSheet {
+  override def flatten(): SingularSheet = this
+}
+
+case class MergedSheet(sheets: Seq[SlessSheet]) extends SlessSheet {
+  override def flatten(): SingularSheet = ???
+}

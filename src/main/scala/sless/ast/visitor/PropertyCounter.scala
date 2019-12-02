@@ -6,7 +6,11 @@ object PropertyCounter {
 }
 
 class PropertyCounter(val property: String) {
-  def visitSlessSheet(css: SlessSheet): Int = css.rules.map(visitRuleNode).sum
+  def visitSlessSheet(css: SlessSheet): Int = css
+    .flatten() // Since properties can be overwritten we first need to construct the flat Sless sheet.
+    .rules
+    .map(visitRuleNode)
+    .sum
 
   def visitRuleNode(rule: RuleNode): Int = rule match {
     case FlatRuleNode(_, declarations, _) => declarations.map(visitDeclarationNode).sum

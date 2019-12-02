@@ -4,7 +4,8 @@ import sless.ast.node._
 object Compiler {
   def apply(css: SlessSheet): String =  visitSlessSheet(css)
 
-  private def visitSlessSheet(css: SlessSheet): String = css.rules
+  private def visitSlessSheet(css: SlessSheet): String = css.flatten()
+    .rules
     .flatMap(_.flatten())
     .map(visitRuleNode)
     .mkString("")

@@ -2,9 +2,16 @@ package sless.ast
 
 import sless.ast.node._
 import sless.ast.visitor.{Compiler, MarginAggregator, PrettyPrinter, PropertyCounter, RemoveEmptyRules}
-import sless.dsl.{CommentDSL, Compilable, LintDSL, NestedSelectorDSL, PropertyDSL, SelectorDSL, ValueDSL}
+import sless.dsl.{CommentDSL, Compilable, LintDSL, MergeDSL, NestedSelectorDSL, PropertyDSL, SelectorDSL, ValueDSL}
 
-class Sless extends PropertyDSL with SelectorDSL with ValueDSL with LintDSL with Compilable with CommentDSL with NestedSelectorDSL {
+class Sless extends PropertyDSL
+  with SelectorDSL
+  with ValueDSL
+  with LintDSL
+  with Compilable
+  with CommentDSL
+  with NestedSelectorDSL
+  with MergeDSL {
   override type Rule = RuleNode
   override type Css = SlessSheet
   override type Selector = SelectorNode
@@ -12,7 +19,7 @@ class Sless extends PropertyDSL with SelectorDSL with ValueDSL with LintDSL with
   override type Property = PropertyNode
   override type Value = ValueNode
 
-  override protected def fromRules(rules: Seq[Rule]): Css = SlessSheet(rules)
+  override protected def fromRules(rules: Seq[Rule]): Css = SingularSheet(rules)
 
   override def prop(string: String): Property = PropertyNode(string)
 
@@ -69,4 +76,6 @@ class Sless extends PropertyDSL with SelectorDSL with ValueDSL with LintDSL with
   override val Parent = node.Parent
 
   override protected def bindWithNesting(s: SelectorNode, rules: Seq[RuleOrDeclaration]): Rule = NestedRuleNode(s, rules)
+
+  override def mergeSheets(cssSheets: Css*): Css = MergedSheet(cssSheets.toSeq)
 }
