@@ -10,7 +10,7 @@ object Compiler {
     .map(visitRuleNode)
     .mkString("")
 
-   def visitRuleNode(rule: FlatRuleNode): String = {
+  private def visitRuleNode(rule: FlatRuleNode): String = {
     val comment = rule.comment match {
       case Some(comment) => s"/* ${comment.str} */"
       case None => ""
@@ -21,7 +21,7 @@ object Compiler {
     s"$comment$selectorString{$declarations}"
   }
 
-   def visitSelectorNode(selector: SelectorNode): String = selector match {
+  private def visitSelectorNode(selector: SelectorNode): String = selector match {
     case All => "*"
     case Type(name) => name
     case Child(lhs, rhs) => s"${visitSelectorNode(lhs)}>${visitSelectorNode(rhs)}"
@@ -38,7 +38,7 @@ object Compiler {
     case Parent => throw new IllegalArgumentException("Can't reach")
   }
 
-   def visitDeclarationNode(declaration: DeclarationNode): String = {
+  private def visitDeclarationNode(declaration: DeclarationNode): String = {
     val property = visitPropertyNode(declaration.property)
     val value = visitValueNode(declaration.value)
     val comment = declaration.comment match {

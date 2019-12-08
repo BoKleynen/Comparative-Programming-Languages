@@ -45,13 +45,10 @@ class MergeTest extends  FunSuite{
     )
 
     val ex = mergeSheets(ex1,ex2)
-
-    println(MergeImplementation.dsl.compile(ex))
-
+    
     assert(
       MergeImplementation.dsl.compile(ex) ===
         """*.class-name2{width:100%;}*.class-name1{background-color:blue;width:95%;}""")
-//         *.class-name1,*.class-name2{width:100%;}*.class-name1{background-color:blue;width:95%;}
   }
 
 }

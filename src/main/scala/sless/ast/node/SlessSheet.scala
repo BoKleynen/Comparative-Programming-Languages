@@ -1,7 +1,5 @@
 package sless.ast.node
 
-import sless.ast.visitor.Compiler
-
 sealed abstract class SlessSheet extends Node {
   def flatten(): FlatSheet
 }
