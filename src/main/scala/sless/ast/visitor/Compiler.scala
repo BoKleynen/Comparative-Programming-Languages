@@ -4,13 +4,13 @@ import sless.ast.node._
 object Compiler {
   def apply(css: SlessSheet): String =  visitSlessSheet(css)
 
-  private def visitSlessSheet(css: SlessSheet): String = css.flatten()
+  private def visitSlessSheet(css: SlessSheet): String = css
+    .flatten()
     .rules
-    .flatMap(_.flatten())
     .map(visitRuleNode)
     .mkString("")
 
-  private def visitRuleNode(rule: FlatRuleNode): String = {
+   def visitRuleNode(rule: FlatRuleNode): String = {
     val comment = rule.comment match {
       case Some(comment) => s"/* ${comment.str} */"
       case None => ""
@@ -21,7 +21,7 @@ object Compiler {
     s"$comment$selectorString{$declarations}"
   }
 
-  private def visitSelectorNode(selector: SelectorNode): String = selector match {
+   def visitSelectorNode(selector: SelectorNode): String = selector match {
     case All => "*"
     case Type(name) => name
     case Child(lhs, rhs) => s"${visitSelectorNode(lhs)}>${visitSelectorNode(rhs)}"
@@ -38,7 +38,7 @@ object Compiler {
     case Parent => throw new IllegalArgumentException("Can't reach")
   }
 
-  private def visitDeclarationNode(declaration: DeclarationNode): String = {
+   def visitDeclarationNode(declaration: DeclarationNode): String = {
     val property = visitPropertyNode(declaration.property)
     val value = visitValueNode(declaration.value)
     val comment = declaration.comment match {

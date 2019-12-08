@@ -1,9 +1,9 @@
 package sless.ast.visitor
 
-import sless.ast.node.{DeclarationNode, FlatRuleNode, MergedSheet, NestedRuleNode, RuleNode, SingularSheet, SlessSheet}
+import sless.ast.node.{DeclarationNode, FlatRuleNode, NestedSheet, NestedRuleNode, RuleNode, SingularSheet, SlessSheet}
 
 // TODO: Write test for nested rules
-// TODO: Write test for merged sheets
+// TODO: Write test for merged sheets`
 object RemoveEmptyRules {
   def apply(css: SlessSheet): (Boolean, SlessSheet) = visitSlessSheet(css)
 
@@ -16,10 +16,10 @@ object RemoveEmptyRules {
         (false, css)
       }
 
-    case MergedSheet(sheets) =>
+    case NestedSheet(sheets) =>
       val res = sheets.map(visitSlessSheet)
       if (res.exists(_._1)) {
-        (true, MergedSheet(res.filterNot(_._1).map(_._2)))
+        (true, NestedSheet(res.filterNot(_._1).map(_._2)))
       } else {
         (false, css)
       }

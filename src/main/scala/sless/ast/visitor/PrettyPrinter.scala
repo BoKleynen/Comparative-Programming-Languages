@@ -7,9 +7,9 @@ object PrettyPrinter {
 }
 
 private class PrettyPrinter(val spaces: Int) {
-  private def visitSlessSheet(css: SlessSheet): String = css.flatten()
+  private def visitSlessSheet(css: SlessSheet): String = css
+    .flatten()
     .rules
-    .flatMap(_.flatten())
     .map(visitRuleNode)
     .mkString("\n\n")
 

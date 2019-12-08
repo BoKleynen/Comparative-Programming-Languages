@@ -77,5 +77,5 @@ class Sless extends PropertyDSL
 
   override protected def bindWithNesting(s: SelectorNode, rules: Seq[RuleOrDeclaration]): Rule = NestedRuleNode(s, rules)
 
-  override def mergeSheets(cssSheets: Css*): Css = MergedSheet(cssSheets.toSeq)
+  override def mergeSheets(cssSheets: Css*): Css = NestedSheet(cssSheets.toSeq)
 }
