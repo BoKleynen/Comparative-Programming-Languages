@@ -22,12 +22,12 @@ struct Stack<T> {
 impl<T> Stack<T> {
     /// A static method that creates a new empty `Stack` struct.
     fn new() -> Stack<T> {
-        unimplemented!()
+        Self { vec: Vec::new() }
     }
 
     /// Wraps the `push` method of the underlying `Vec`.
     fn push(&mut self, x: T) {
-        unimplemented!()
+        self.vec.push(x)
     }
 
     /// Wraps the `pop` method of the underlying `Vec`. When the `Stack` is
@@ -35,7 +35,7 @@ impl<T> Stack<T> {
     /// message, otherwise `Ok(x)` where `x` is the element that was last
     /// added.
     fn pop(&mut self) -> Result<T, String> {
-        unimplemented!()
+        self.vec.pop().ok_or("no element on the stack".to_string())
     }
 
     /// Pop two elements of the `Stack` using `pop`.
@@ -49,7 +49,10 @@ impl<T> Stack<T> {
     /// When there are no elements on the `Stack`, return an `Err` with "no
     /// element on the stack" as error message.
     fn pop2(&mut self) -> Result<(T, T), String> {
-        unimplemented!()
+        let last = self.pop()?;
+        let before_last = self.vec.pop().ok_or("only one element on the stack")?;
+
+        Ok((before_last, last))
     }
 
     /// Pop the only element on the `Stack`. Typically used to retrieve the
@@ -61,7 +64,13 @@ impl<T> Stack<T> {
     /// When there is more than one element on the `Stack`, return an `Err`
     /// with "more than one element on the stack" as error message.
     fn pop_only(&mut self) -> Result<T, String> {
-        unimplemented!()
+        let val = self.pop()?;
+
+        if self.vec.is_empty() {
+            Ok(val)
+        } else {
+            Err("more than one element on the stack".to_string())
+        }
     }
 }
 
@@ -69,10 +78,37 @@ impl<T> Stack<T> {
 ///
 /// Return `Ok(last_element_on_stack)` when the RPN calculation succeeded,
 /// otherwise an `Err` containing an error message.
-fn rpn_calc(s: &str) -> Result<f32, String> {
+pub fn rpn_calc(s: &str) -> Result<f32, String> {
     let mut stack = Stack::new();
 
-    // TODO write code here
+    for x in s.split_whitespace() {
+        match x {
+            "+" => {
+                let (before_last, last) = stack.pop2()?;
+                let res = before_last + last;
+                stack.push(res);
+            },
+            "-" => {
+                let (before_last, last) = stack.pop2()?;
+                let res = before_last - last;
+                stack.push(res);
+            },
+            "*" => {
+                let (before_last, last) = stack.pop2()?;
+                let res = before_last * last;
+                stack.push(res);
+            },
+            "/" => {
+                let (before_last, last) = stack.pop2()?;
+                let res = before_last / last;
+                stack.push(res);
+            },
+            num => {
+                let num: f32 = x.parse().map_err(|_| format!("unknown operator: {}", num))?;
+                stack.push(num);
+            }
+        }
+    }
 
     stack.pop_only()
 }

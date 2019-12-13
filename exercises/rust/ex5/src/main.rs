@@ -1,3 +1,5 @@
+use ex5::rpn_calc;
+
 fn main() {
     match rpn_calc("1 2 + 10 * +") {
         Ok(n) => println!("Ok: {}", n),
