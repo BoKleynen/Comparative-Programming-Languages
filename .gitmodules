@@ -1,0 +1,3 @@
+[submodule "guest-lectures/js"]
+	path = guest-lectures/js
+	url = git@github.com:entropitor/guest-lecture-js.git
