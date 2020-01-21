@@ -104,7 +104,7 @@ pub fn rpn_calc(s: &str) -> Result<f32, String> {
                 stack.push(res);
             },
             num => {
-                let num: f32 = x.parse().map_err(|_| format!("unknown operator: {}", num))?;
+                let num = x.parse().map_err(|_| format!("unknown operator: {}", num))?;
                 stack.push(num);
             }
         }

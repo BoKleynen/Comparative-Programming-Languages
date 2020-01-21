@@ -5,7 +5,8 @@ const TRUNK_WIDTH: usize = 3;
 struct ChristmasTree {
     /// The character used to print the top of the tree
     top: char,
-    // TODO add fields
+    height: usize,
+    current: usize
 }
 
 impl ChristmasTree {
@@ -13,7 +14,7 @@ impl ChristmasTree {
     /// `height` as the total number of lines to print (excluding the top and
     /// the trunk).
     fn new(top: char, height: usize) -> ChristmasTree {
-        unimplemented!()
+        Self { top, height, current: 0 }
     }
 }
 
@@ -24,6 +25,15 @@ impl Iterator for ChristmasTree {
 
     /// Generate the next line of the Christmas tree to print.
     fn next(&mut self) -> Option<String> {
-        unimplemented!()
+        if self.current == 0 {
+            self.current += 1;
+            Some(format!("{}", self.top))
+        } else if self.current < height {
+            self.current += 1;
+        } else if self.current == height {
+            self.current += 1;
+        }
+
+        None
     }
 }
