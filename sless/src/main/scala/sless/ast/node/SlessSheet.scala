@@ -17,22 +17,21 @@ case class NestedSheet(sheets: Seq[SlessSheet]) extends SlessSheet {
 
   private def mergeRules(lhsRules: Seq[FlatRuleNode], rhsRules: Seq[FlatRuleNode]): Seq[FlatRuleNode] = {
     rhsRules.foldLeft(lhsRules)((res, rhsRule) => {
-      res.indexWhere(_.selector match {
+      res.zipWithIndex.find(_._1.selector match {
         case List(selectors) => selectors.contains(rhsRule.selector)
         case s => s == rhsRule.selector
       }) match {
-        case -1 => res :+ rhsRule
-        case i =>
-          val resRule = res(i)
-          val mergedDeclarations = rhsRule.declarations.foldLeft(resRule.declarations)((resDecl, declaration) => {
-            resDecl.indexWhere(_.property == declaration.property) match {
-              case -1 => declaration +: resDecl
-              case j => resDecl.updated(j, declaration)
+        case None => res :+ rhsRule
+        case Some((lhsRule, i)) =>
+          val mergedDeclarations = rhsRule.declarations.foldLeft(lhsRule.declarations)((lhsDeclarations, rhsDeclaration) => {
+            lhsDeclarations.indexWhere(_.property == rhsDeclaration.property) match {
+              case -1 => rhsDeclaration +: lhsDeclarations
+              case j => lhsDeclarations.updated(j, rhsDeclaration)
             }
           })
-          resRule.selector match {
+          lhsRule.selector match {
             case List(selectors) => res
-              .updated(i, FlatRuleNode(List(selectors.filterNot(_ == rhsRule.selector)), resRule.declarations)) :+
+              .updated(i, FlatRuleNode(List(selectors.filterNot(_ == rhsRule.selector)), lhsRule.declarations)) :+
               FlatRuleNode(rhsRule.selector, mergedDeclarations)
             case selector => res.updated(i, FlatRuleNode(selector, mergedDeclarations))
           }
